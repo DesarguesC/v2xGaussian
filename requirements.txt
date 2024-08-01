@@ -1,3 +1,7 @@
+# conda create -n v2x python=3.9.17
+torch==1.12.1+cu116
+torchvision==0.13.1+cu116
+torchaudio==0.12.1
 tqdm
 rich
 ninja
@@ -10,28 +14,26 @@ opencv-python
 imageio
 imageio-ffmpeg
 omegaconf
-
-torch
 einops
 plyfile
 pygltflib
-
 # for gui
 dearpygui
-
 # for stable-diffusion
 huggingface_hub
 diffusers
 accelerate
 transformers
-
 # for dmtet and mesh export
 xatlas
 trimesh
 PyMCubes
 pymeshlab
-
 rembg[gpu,cli]
-
 # gradio demo
 gradio
+
+git+https://github.com/NVlabs/nvdiffrast/
+git+https://github.com/ashawkey/kiuikit
+git+https://github.com/bytedance/MVDream
+git+https://github.com/bytedance/ImageDream/#subdirectory=extern/ImageDream
