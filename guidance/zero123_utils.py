@@ -13,7 +13,7 @@ from zero123 import Zero123Pipeline
 
 
 class Zero123(nn.Module):
-    def __init__(self, device, fp16=True, t_range=[0.02, 0.98], model_key="ashawkey/zero123-xl-diffusers"):
+    def __init__(self, device, fp16=True, t_range=[0.02, 0.98], model_key="./models/ashawkey/zero123-xl-diffusers"):
         super().__init__()
 
         self.device = device
@@ -221,9 +221,9 @@ if __name__ == '__main__':
     print(f'[INFO] loading model ...')
     
     if opt.stable:
-        zero123 = Zero123(device, model_key='ashawkey/stable-zero123-diffusers')
+        zero123 = Zero123(device, model_key='./models/ashawkey/stable-zero123-diffusers')
     else:
-        zero123 = Zero123(device, model_key='ashawkey/zero123-xl-diffusers')
+        zero123 = Zero123(device, model_key='./models/ashawkey/zero123-xl-diffusers')
 
     print(f'[INFO] running model ...')
     zero123.get_img_embeds(image)
