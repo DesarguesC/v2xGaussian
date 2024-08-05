@@ -25,14 +25,14 @@ class BLIP2():
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('path', type=str, help="path to image (png, jpeg, etc.)")
-    parser.add_argument('--model', default='u2net', type=str, help="rembg model, see https://github.com/danielgatis/rembg#models")
+    parser.add_argument('--path', type=str, help="path to image (png, jpeg, etc.)")
+    # parser.add_argument('--model', default='u2net', type=str, help="rembg model, see https://github.com/danielgatis/rembg#models")
     parser.add_argument('--size', default=256, type=int, help="output resolution")
     parser.add_argument('--border_ratio', default=0.2, type=float, help="output border ratio")
     parser.add_argument('--recenter', type=bool, default=True, help="recenter, potentially not helpful for multiview zero123")
     # SEEM
-    parser.add_argument('--seem_ckpt', type=str, default="../Tools/SEEM/focall_unicl_lang_demo.yaml", help='restore where the SEEM & LaMa model locates')
-    parser.add_argument('--seem_cfg', type=str, default="../Tools/SEEM/seem_focall_v0.pt")
+    parser.add_argument('--seem_ckpt', type=str, default="../Tools/SEEM/seem_focall_v0.pt", help='restore where the SEEM & LaMa model locates')
+    parser.add_argument('--seem_cfg', type=str, default="seem/configs/seem/focall_unicl_lang_demo.yaml")
     # LaMa
     parser.add_argument('--lama_ckpt', default='../Tools/LaMa/', help='actually path to lama ckpt base folder, ckpt specified in config files')
     parser.add_argument('--lama_cfg', default='./configs/lama_default.yaml', help='path to lama inpainting config path')
