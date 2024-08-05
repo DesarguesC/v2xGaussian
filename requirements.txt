@@ -15,6 +15,7 @@ imageio
 imageio-ffmpeg
 omegaconf
 einops
+whisper
 plyfile
 pygltflib
 # for gui
@@ -37,3 +38,4 @@ git+https://github.com/NVlabs/nvdiffrast/
 git+https://github.com/ashawkey/kiuikit
 git+https://github.com/bytedance/MVDream
 git+https://github.com/bytedance/ImageDream/#subdirectory=extern/ImageDream
+git+https://github.com/MaureenZOU/detectron2-xyz.git
