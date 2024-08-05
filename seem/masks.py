@@ -86,9 +86,11 @@ def preload_lama_remover(opt, preloaded_lama_dict = None):
 
 
 def dilate_mask(mask, dilate_factor=15):
+    """
     if np.max(mask) <= 1.:
         mask *= 255.
-
+    """
+    # `inpaint_img_with_lama` will finish this
     mask = mask.astype(np.uint8)
     mask = cv2.dilate(
         mask,
@@ -200,11 +202,6 @@ def FG_remove(opt, img, reftxt = 'Cars', preloaded_seem_detector = None, preload
 
     seg_mask = np.concatenate([np.expand_dims(tar, axis=0) for tar in target_mask_list], axis=0)
     print(f'seg_mask = {seg_mask.shape}')
-
-    # TODO: save intermediate results
-    cv2.imwrite(os.path.join(opt.results, 'remove/r.jpg'), cv2.cvtColor(np.uint8(img_inpainted), cv2.COLOR_RGB2BGR))
-    cv2.imwrite(os.path.join(opt.results, 'remove/m.jpg'), cv2.cvtColor(np.uint8(seg_mask), cv2.COLOR_RGB2BGR))
-
 
 
     return Image.fromarray(res), seg_mask

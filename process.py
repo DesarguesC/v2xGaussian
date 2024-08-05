@@ -1,17 +1,7 @@
-import os
-import glob
-import sys
-import cv2
-import argparse
+import os, glob, cv2, argparse, torch, rembg
 import numpy as np
-import matplotlib.pyplot as plt
-
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from torchvision import transforms
 from PIL import Image
-import rembg
+from seem.masks import FG_remove
 
 
 class BLIP2():
@@ -66,7 +56,7 @@ if __name__ == '__main__':
 
     setattr(opt, "device", "cuda" if torch.cuda.is_available() else "cpu")
 
-    session = rembg.new_session(model_name=opt.model)
+    # session = rembg.new_session(model_name=opt.model)
 
     if os.path.isdir(opt.path):
         print(f'[INFO] processing directory {opt.path}...')
@@ -89,31 +79,11 @@ if __name__ == '__main__':
         
         # TODO: use seem to remove foreground
         print(f'[INFO] background removal...')
-        carved_image = rembg.remove(image, session=session) # [H, W, 4]
-        mask = carved_image[..., -1] > 0
 
-        # recenter
-        if opt.recenter:
-            print(f'[INFO] recenter...')
-            final_rgba = np.zeros((opt.size, opt.size, 4), dtype=np.uint8)
-            
-            coords = np.nonzero(mask)
-            x_min, x_max = coords[0].min(), coords[0].max()
-            y_min, y_max = coords[1].min(), coords[1].max()
-            h = x_max - x_min
-            w = y_max - y_min
-            desired_size = int(opt.size * (1 - opt.border_ratio))
-            scale = desired_size / max(h, w)
-            h2 = int(h * scale)
-            w2 = int(w * scale)
-            x2_min = (opt.size - h2) // 2
-            x2_max = x2_min + h2
-            y2_min = (opt.size - w2) // 2
-            y2_max = y2_min + w2
-            final_rgba[x2_min:x2_max, y2_min:y2_max] = cv2.resize(carved_image[x_min:x_max, y_min:y_max], (w2, h2), interpolation=cv2.INTER_AREA)
-            
-        else:
-            final_rgba = carved_image
-        
-        # write image
-        cv2.imwrite(out_rgba, final_rgba)
+        carved_image, mask = FG_remove(opt = opt, img = image)
+        # TODO: save intermediate results
+        cv2.imwrite(os.path.join(opt.results, 'remove/r.jpg'), cv2.cvtColor(np.uint8(carved_image), cv2.COLOR_RGB2BGR))
+        cv2.imwrite(os.path.join(opt.results, 'remove/m.jpg'), cv2.cvtColor(np.uint8(mask), cv2.COLOR_RGB2BGR))
+
+
+    print('\nDone.')
