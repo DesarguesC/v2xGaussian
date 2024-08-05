@@ -18,8 +18,8 @@ memory_test.txt
 models/
 
 diff-gaussian-rasterization/
-data/*.png
-data/*.jpg
+
+
 
 
 *.csv
