@@ -1,5 +1,3 @@
-# conda create -n v2x python=3.9.17
-# pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu116
 tqdm
 rich
 ninja
@@ -35,16 +33,14 @@ rembg[gpu,cli]
 gradio
 nltk
 easydict
+thop
+tensorboardX
+h5py
+
 albumentations==0.4.3
 webdataset==0.2.35
+mmcv-full==1.4.4
+mmsegmentation==0.22.1
 
 
-# install manually
-
-# git+https://github.com/NVlabs/nvdiffrast/
-# git+https://github.com/ashawkey/kiuikit
-# git+https://github.com/bytedance/MVDream
-# git+https://github.com/bytedance/ImageDream/#subdirectory=extern/ImageDream
-# git+https://github.com/MaureenZOU/detectron2-xyz.git
-# -e git+https://github.com/DesarguesC/kornia@master#egg=kornia
 

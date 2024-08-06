@@ -30,8 +30,12 @@ def preload_seem_detector(opt, preloaded_seem_detector = None):
     if preloaded_seem_detector is None:
         cfg = load_opt_from_config_files([opt.seem_cfg])
         cfg['device'] = opt.device
-        seem_model = BaseModel(cfg, build_model(cfg)).from_pretrained(opt.seem_ckpt).eval().cuda() # remember to compile SEEM
-
+        try:
+            seem_model = BaseModel(cfg, build_model(cfg)).from_pretrained(opt.seem_ckpt).eval().cuda() # remember to compile SEEM
+        except Exception as err:
+            print('debug')
+            print(f'[INFO]: {err}')
+            pdb.set_trace()
     else:
         cfg = preloaded_seem_detector['cfg']
         seem_model = preloaded_seem_detector['seem_model']
