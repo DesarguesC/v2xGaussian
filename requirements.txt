@@ -1,13 +1,11 @@
 # conda create -n v2x python=3.9.17
-# pip install torch==1.12.1+cu116 torchvision==0.13.1+cu116 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu116
-# torch==1.12.1+cu116
-# torchvision==0.13.1+cu116
-# torchaudio==0.12.1
+# pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu116
 tqdm
 rich
 ninja
 numpy
-# pytorch_lightning
+Pillow==9.4.0
+pytorch_lightning==1.5.9
 pandas
 scipy
 scikit-learn
@@ -35,6 +33,11 @@ pymeshlab
 rembg[gpu,cli]
 # gradio demo
 gradio
+nltk
+easydict
+albumentations==0.4.3
+webdataset==0.2.35
+
 
 # install manually
 
@@ -43,4 +46,5 @@ gradio
 # git+https://github.com/bytedance/MVDream
 # git+https://github.com/bytedance/ImageDream/#subdirectory=extern/ImageDream
 # git+https://github.com/MaureenZOU/detectron2-xyz.git
+# -e git+https://github.com/DesarguesC/kornia@master#egg=kornia
 
