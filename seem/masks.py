@@ -1,13 +1,11 @@
-import torch, cv2, os, glob, subprocess, random, yaml
+import torch, cv2, os, glob, subprocess, random, yaml, sys, pdb
 import numpy as np
 import torch.nn.functional as F
 from PIL import Image
-from pytorch_lightning import seed_everything
 from omegaconf import OmegaConf
 from seem.utils.visualizer import Visualizer
-from detectron2.utils.colormap import random_color
 from detectron2.data import MetadataCatalog
-from detectron2.structures import BitMasks
+
 from .modeling.language.loss import vl_similarity
 from .utils.constants import COCO_PANOPTIC_CLASSES
 from detectron2.data.datasets.builtin_meta import COCO_CATEGORIES
@@ -16,20 +14,15 @@ from lama.saicinpainting.evaluation.utils import move_to_device
 from lama.saicinpainting.training.trainers import load_checkpoint
 from lama.saicinpainting.evaluation.data import pad_tensor_to_modulo
 
-
-metadata = MetadataCatalog.get('coco_2017_train_panoptic')
-all_classes = [name.replace('-other','').replace('-merged','') for name in COCO_PANOPTIC_CLASSES] + ["others"]
-colors_list = [(np.array(color['color'])/255).tolist() for color in COCO_CATEGORIES] + [[1, 1, 1]]
-
 from seem.utils.arguments import load_opt_from_config_files
 from seem.modeling.BaseModel import BaseModel
 from seem.modeling import build_model
 from seem.utils.constants import COCO_PANOPTIC_CLASSES
-from seem.demo.seem.tasks import *
 
 
-
-
+metadata = MetadataCatalog.get('coco_2017_train_panoptic')
+all_classes = [name.replace('-other','').replace('-merged','') for name in COCO_PANOPTIC_CLASSES] + ["others"]
+colors_list = [(np.array(color['color'])/255).tolist() for color in COCO_CATEGORIES] + [[1, 1, 1]]
 
 
 
@@ -37,7 +30,8 @@ def preload_seem_detector(opt, preloaded_seem_detector = None):
     if preloaded_seem_detector is None:
         cfg = load_opt_from_config_files([opt.seem_cfg])
         cfg['device'] = opt.device
-        seem_model = BaseModel(cfg, build_model(cfg)).from_pretrained(opt.seem_ckpt).eval().cuda()
+        seem_model = BaseModel(cfg, build_model(cfg)).from_pretrained(opt.seem_ckpt).eval().cuda() # remember to compile SEEM
+
     else:
         cfg = preloaded_seem_detector['cfg']
         seem_model = preloaded_seem_detector['seem_model']
@@ -172,7 +166,9 @@ def process_seem_outputs(temperature, results, extra):
 def FG_remove(opt, img, reftxt = 'Cars', preloaded_seem_detector = None, preloaded_lama_dict = None, dilate_kernel_size = 15):
     # img: np.array -> [H W 3]
     seem_model, seem_cfg = preload_seem_detector(opt, preloaded_seem_detector)
+    # sys.exit(-1)
     preloaded_lama_dict = preload_lama_remover(opt, preloaded_lama_dict)
+
     height, width, _ = img.shape
     img_ori = np.asarray(img).copy()
     img = torch.from_numpy(img_ori).permute(2, 0, 1).cuda()
